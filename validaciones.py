@@ -25,21 +25,30 @@ def validarCadena(message):
     return cadena
 
 def cedulaFormat(cedula):
-    #xxx-xxxxxx-xxxxd
-    patron = r"\d{3}-\d{6}-\d{4}[A-Za-z]"
-    if not(re.fullmatch(patron, cedula)):
+    #xxx-xxxxxx-xxxx[A-z]
+    n_id = r"\d{3}-\d{6}-\d{4}[A-Za-z]"
+    if not(re.fullmatch(n_id, cedula)):
         return False
     return True
-def
+
+def buscarIdEmpleado(lista_cliente, cedula):
+    lista_cliente_id = {cliente.getId() for cliente in lista_cliente}
+    if cedula in lista_cliente_id:
+        return False
+    return True
+
 @decoratorvalidate
-def validarCedula(message):
+def validarCedula(message, lista_cliente):
     cedula = str(input(message))
     if not(cedulaFormat(cedula)):
         raise ValueError
+    if not (buscarIdEmpleado(lista_cliente,cedula)):
+        raise ValueError
     return cedula
 
+'''
 def libraProteina(valor, cantidad_libras):
     return valor * cantidad_libras
-    
+'''
 
    
