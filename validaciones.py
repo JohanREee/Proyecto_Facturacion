@@ -1,5 +1,6 @@
 import re
 
+
 def decoratorvalidate(function):
     def wrap(*args, **kwargs):
         while True:
@@ -46,6 +47,54 @@ def validarCedula(message, lista_cliente):
         raise ValueError
     return cedula
 
+#files
+import os
+import json as j
+def decoratorFile(function):
+    def wrap(*args, **kwargs):
+        try:
+            result = function(*args, **kwargs)
+        except FileNotFoundError:
+            print('Archivo no encontrado')
+            return None
+        else:
+            return result
+    return wrap
+
+@decoratorFile
+def loadFile(file_name):
+    with open(file_name, 'r') as file:
+        return file.read()
+    
+def loadJSONMonthlyPayment():
+    #Estas lineas manejan el acceso a archivos sin importar el sistema operativo(Usa ruta absoluta, no relativa)
+    script_dir = os.path.dirname(os.path.abspath(__file__))#
+    script_path = os.path.join(script_dir, 'files', 'mensualidad.json') 
+    #Ya sabes que en windows la ruta de un archivo es tipo: Users/Johan/archivo.py, pero en mac no es asi
+    file = loadFile(script_path)
+    if file is None:
+        return None
+    j_file = j.load(file)
+    month = j_file["Monthly"]
+    fortknight = j_file["Fortknight"]
+    week = j_file["Week"]
+    day = j_file["Daily"]
+    return [month,fortknight,week,day]
+def fileMonthlyPayment(type_of_payment):
+    mensualidad = loadJSONMonthlyPayment()
+    if mensualidad is None:
+        return None
+    match type_of_payment:
+        case 'month':
+            return mensualidad[0]
+        case 'fortknight':
+            return mensualidad[1]
+        case 'week':
+            return mensualidad[2]
+        case 'day':
+            return mensualidad[3]
+        case _:
+            return None
 '''
 def libraProteina(valor, cantidad_libras):
     return valor * cantidad_libras

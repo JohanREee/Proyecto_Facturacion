@@ -109,19 +109,23 @@ def menuPrincipal():
     print('2. Editar cliente')
     print('3. Mostrar cliente')
     print('4. Eliminar cliente')
-    print('5. Menu de Servicios')
-    print('6. Menu de Productos')
-    print('7. Menu de Asesoramientos')
-    print('8. Menu de Configuracion')
-    print('9. Salir')
+    print('5. Activar cliente')
+    print('6. Menu de Servicios')
+    print('7. Menu de Productos')
+    print('8. Menu de Asesoramientos')
+    print('9. Menu de Configuracion')
+    print('10. Salir')
     op = validarNumero('Digite una opcion valida: ')
     match op:
         case 1:
             lista_clientes.append(Cliente())
         case 2:
-            print('Editando cliente')
+            editarCliente()
         case 3:
-            print('Mostrando cliente')
+            cliente = buscarCliente(lista_clientes, setId())
+            if cliente is None:
+                return
+            cliente.showClient()
         case 4:
             print('Eliminando cliente')
         case 5:
