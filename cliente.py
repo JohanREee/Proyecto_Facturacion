@@ -1,5 +1,6 @@
 import validaciones as v
-
+import mensualidad as m
+import time_form as t
 NAME = 'nombre'
 AGE = 'edad'
 ID = 'cedula'
@@ -14,23 +15,36 @@ class Cliente:
         self.nombre_completo = v.validarCadena('Digite el nombre del cliente: ')
         self.edad = v.validarNumero('Digite la edad del cliente: ')
         self.__cedula = v.validarCedula('Digite la cedula del cliente: ')
-        self.__servicios = {'Servicios activos': None, 'Asesoramientos activos': None}        
+        self.__servicios = {"Servicios_activos": [], 'Asesoramientos_activos': []}        
         self.__id_cliente = conteo_cliente
         self.__band = True
         conteo_cliente +=1
+
     def getBand(self):
         return self.__band
+    
     def getId(self):
         return self.__cedula
+    
     def getIdClient(self):
         return self.__id_cliente
+    
     def getName(self):
         return self.nombre_completo
     
-    def showClient(self):
+    def updateServices(self):
+        for mensualidad in self.__servicios["Servicios_activos"]:
+            if t.validateTime(mensualidad[2]):
+                del mensualidad
+
+    def showClient(self, bypass = False):
+        if not self.getBand() and bypass:
+            if not(ask('Este usuario ha sido eliminado del sistema. Desea mostrarlo?')):
+                return
         print(f'\nNombre: {self.nombre_completo}')
         print(f'Edad: {self.edad}')
-        print(f'Cedula: {self.__cedula}\n')
+        print(f'Cedula: {self.getId()}')
+        print(f'ID del cliente: {self.getIdClient()}\n')
         #add services
 
     def editName(self):
@@ -58,6 +72,10 @@ class Cliente:
         self.__band = False
     def onBand(self):
         self.__band = True
+    def addService(self, type_of_payment):
+        list_payment = m.cancelarPagoMensual(type_of_payment)
+        self.__servicios['Servicios_activos'].append(list_payment)
+
 
 def digitarCedula():
     cedula = str(input('Digite la cedula que desea buscar: '))
@@ -99,6 +117,13 @@ def ask(message):
         case _:
             print('Valor invalido. Volviendo al menu anterior')
 
+def triggerClient(action):
+    cliente = buscarCliente(lista_clientes, setId(lista_clientes))
+    if cliente is None:
+        print('Cliente no encontrado. Volviendo al menu anterior')
+        return
+    eliminate_or_activate = 
+    if not(ask(f'Estas seguro de querer eliminar al usuario {cliente.getName()}?')):
 def triggerEliminarCliente():
     cliente = buscarCliente(lista_clientes, setId(lista_clientes))
     if cliente is None:
@@ -124,6 +149,9 @@ def triggerActivarCliente():
             lista_clientes[x].onBand()
             break
     print('Cliente reactivado.')
-    
+
+def updateAllClients():
+    for cliente in lista_clientes:
+        cliente.updateServices()
 
     

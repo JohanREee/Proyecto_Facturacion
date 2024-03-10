@@ -1,6 +1,6 @@
 from time import *
 
-def getActualTime():
+def getCurrentTime():
     actual = localtime()
     return [actual[0], actual[1], actual[2]]
 
@@ -23,5 +23,15 @@ def addTime(time, dias_cantidad = 7):
             year +=1
     return [year, month, day]
         
-time = getActualTime()
-list_time= addTime(time, 10)
+def validateTime(expiration_time): #True, False
+    current_time =  getCurrentTime()
+    current_year, current_month, current_day = current_time
+    expiration_year, expiration_month, expiration_day = expiration_time
+
+    if(current_year > expiration_year): #2024, 2025
+        return True
+    elif(current_month > expiration_month):
+        return True
+    elif(current_day > expiration_day):
+        return True
+    return False
