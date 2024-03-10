@@ -24,8 +24,6 @@
         "CreatinaMuscleTech" : 25,
         "CreatinaRightNutrition" : 20,
         "CreatineaRule1" : 22
-        
-
     },
     "Productos_Tarros_Total" : {
         "C4_Tarro" : 1500,
@@ -39,8 +37,5 @@
         "CreatinaMuscleTech_Tarro" : 1200,
         "CreatinaRightNutrition_Tarro" : 950,
         "CreatinaRule1_Tarro" : 1000
-
-
     }
-    
 }

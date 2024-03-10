@@ -24,7 +24,7 @@ def validarNumero(message):
 def validarCadena(message):
     cadena = str(input(message))
     val = any((char.isdigit() or char.isspace())for char in cadena)
-    if val:
+    if not val:
         raise ValueError
     return cadena
 
@@ -66,8 +66,7 @@ def decoratorFile(function):
 
 @decoratorFile
 def readFile(file_name):
-    with open(file_name, 'r') as file:
-        return file.read()
+    return open(file_name, 'r')
 
 def scriptPath(dir = None, file = None):
     #Estas lineas manejan el acceso a archivos sin importar el sistema operativo(Usa ruta absoluta, no relativa)
@@ -79,10 +78,8 @@ def loadJSONProduct(producto_clasificacion):
     script_path = scriptPath('files','nombre_productos.json')
     file = readFile(script_path) 
     j_file = j.load(file)
-    #Entonces en esta parte estoy cargando UNICAMENTE una clasificacion
     producto_clasificacion_cargado = j_file[producto_clasificacion] 
-    #Se supone que los valores son otras colecciones de datos tipo: {llave: valor}
-    set_producto_cargado = (producto for producto in producto_clasificacion_cargado.keys())###
+    set_producto_cargado = (producto for producto in producto_clasificacion_cargado.keys())
     
     return set_producto_cargado###
 
@@ -108,6 +105,7 @@ def loadJSONMonthlyPayment():
     fortknight = j_file["Fortknight"]
     week = j_file["Week"]
     day = j_file["Daily"]
+    file.close()
     return [month,fortknight,week,day]
 
 def fileMonthlyPayment(type_of_payment):
@@ -123,11 +121,6 @@ def fileMonthlyPayment(type_of_payment):
             return mensualidad[2], 'week'
         case 'day':
             return mensualidad[3], 'day'
-        case _:
-            print('Error. No se ha encontrado el archivo "mensualidad.json". Desea añadirlo?')
-
-
-
 '''
 def libraProteina(valor, cantidad_libras):
     return valor * cantidad_libras

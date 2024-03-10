@@ -1,14 +1,77 @@
 from cliente import *
 from validaciones import *
-from asesoramientos import *
 from archivo import *
-from menu import *
-
+import time_form as t
 lista_productos_libreados = []
 lista_productos_scoops = []
 lista_productos_pastillas = []
 lista_productos_tarros = []
 #dale
+
+def menuPrincipal():
+    print('Bienvenido a Arnold Gym')
+    print('1. Agregar cliente')
+    print('2. Editar cliente')
+    print('3. Mostrar cliente')
+    print('4. Eliminar cliente')
+    print('5. Activar cliente')
+    print('6. Menu de Servicios')
+    print('7. Menu de Productos')
+    print('8. Menu de Asesoramientos')
+    print('9. Menu de Configuracion')
+    print('10. Salir')
+    op = validarNumero('Digite una opcion valida: ')
+    match op:
+        case 1:
+            lista_clientes.append(Cliente())
+        case 2:
+            editarCliente()
+        case 3:
+            cliente = buscarCliente(lista_clientes, setId())
+            if cliente is None:
+                return
+            cliente.showClient()
+        case 4:
+            triggerClientState('off')
+        case 5:
+            triggerClientState('on')
+        case 6:
+            menuServicios()
+        case 7:
+            menuProductos()
+        case 8:
+            print('Menu de asesormamientos WU')
+        case 9:
+            print('Menu de configuracion WU')
+        case 10:
+            #codigo para guardar datos en un archivo
+            exit('Saliendo del programa')
+        case _:
+            print('Valor invalido. Volver a intentar')
+
+def menuServicios():
+    while True:
+        print('Menu de cuotas')
+        print('1. Formato Mensual')
+        print('2. Formato Quincenal')
+        print('3. Formato Semanal')
+        print('4. Formato Diario')
+        print('5. Volver a Menu Anterior')
+        op = validarNumero('Digite una opcion valida: ')
+        match op:
+            case 1:
+                addService('month')
+            case 2:
+                addService('fortknight')
+            case 3:
+                addService('week')
+            case 4:
+                addService('day')
+            case 5:
+                print('Volviendo al menu anterior')
+                return
+            case _:
+                print('Valor invalido. Volver a intentar')
 
 def menuProductos():
     

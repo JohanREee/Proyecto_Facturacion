@@ -13,9 +13,3 @@ def Tonificar():
 def AsesoramientoBasico():
     print("4. Asesoramiento Básico")
     print("🤓 Este programa de asesoramiento básico es ideal para aquellos que están dando sus primeros pasos en el mundo del acondicionamiento físico y el ejercicio. A través de una combinación de asesoramiento personalizado y sesiones de entrenamiento simples, te proporcionaré los conocimientos y las herramientas básicas necesarias para comenzar tu viaje hacia un estilo de vida más saludable. Desde la introducción de ejercicios básicos de cuerpo completo hasta consejos sobre nutrición y hábitos saludables, este programa te ayudará a establecer una base sólida para tu bienestar físico y mental.\n")
-
-# Ejemplo de uso:
-FullArnold()
-FullBody()
-Tonificar()
-AsesoramientoBasico()

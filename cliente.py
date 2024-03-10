@@ -4,7 +4,7 @@ import time_form as t
 NAME = 'nombre'
 AGE = 'edad'
 ID = 'cedula'
-conteo_cliente = 0
+conteo_cliente = 1
 lista_clientes = []
 def modificarListaEmpleado(cliente_update, id_cliente):
     for x, cliente in enumerate(lista_clientes):
@@ -12,13 +12,15 @@ def modificarListaEmpleado(cliente_update, id_cliente):
             lista_clientes[x] = cliente_update
 class Cliente:
     def __init__(self):
+        global conteo_cliente
         self.nombre_completo = v.validarCadena('Digite el nombre del cliente: ')
         self.edad = v.validarNumero('Digite la edad del cliente: ')
-        self.__cedula = v.validarCedula('Digite la cedula del cliente: ')
+        self.__cedula = v.validarCedula('Digite la cedula del cliente: ',lista_clientes)
         self.__servicios = {"Servicios_activos": [], 'Asesoramientos_activos': []}        
         self.__id_cliente = conteo_cliente
         self.__band = True
         conteo_cliente +=1
+        print(f'Usuario {self.nombre_completo} agregado con exito.\n\n')
 
     def getBand(self):
         return self.__band
@@ -37,16 +39,26 @@ class Cliente:
             if t.validateTime(mensualidad[2]):
                 del mensualidad
 
-    def showClient(self, bypass = False):
-        if not self.getBand() and bypass:
+    def showClient(self, bypass = False):#bypass = True for showing ALL clients without asking
+        if bypass or not self.getBand():
             if not(ask('Este usuario ha sido eliminado del sistema. Desea mostrarlo?')):
                 return
         print(f'\nNombre: {self.nombre_completo}')
         print(f'Edad: {self.edad}')
         print(f'Cedula: {self.getId()}')
         print(f'ID del cliente: {self.getIdClient()}\n')
+        print('Servicios activos: ')
+        self.showMonthlyPayment()
         #add services
-
+        #  return [amount, name_payment, notification_time]
+    def showMonthlyPayment(self):
+        for mensualidad in self.__servicios["Servicios_activos"]:
+            dia = mensualidad[2][2] 
+            mes = mensualidad[2][1]
+            year = mensualidad[2][0]
+            print(f'Tipo de pago: {mensualidad[0]}')
+            print(f'Cantidad a pagar: C${mensualidad[1]}')
+            print(f'Fecha de expiracion: {dia}/{mes}/{year}')
     def editName(self):
         nombre = v.validarCadena('Digite el nuevo nombre del cliente: ')
         print(f'El nombre {self.nombre_completo} ha sido modificado por {nombre}')
@@ -67,13 +79,13 @@ class Cliente:
             self.edad = self.editAge()
         elif edit == 3:
             self.__cedula = self.editId()
-        modificarListaEmpleado(self,self.getIdClient())
+
     def offBand(self):
         self.__band = False
     def onBand(self):
         self.__band = True
     def addService(self, type_of_payment):
-        list_payment = m.cancelarPagoMensual(type_of_payment)
+        list_payment = m.generarMembresia(type_of_payment,self.getId())
         self.__servicios['Servicios_activos'].append(list_payment)
 
 
@@ -95,7 +107,7 @@ def buscarCliente(lista_cliente, set, cedula = True):
             return cliente
 
 def editarCliente():
-    cliente = buscarCliente(lista_clientes, setId(lista_clientes))
+    cliente = buscarCliente(lista_clientes, setId())
     if  cliente is None:
         print('Cliente no encontrado. Volviendo al menu anterior')
         return
@@ -117,41 +129,40 @@ def ask(message):
         case _:
             print('Valor invalido. Volviendo al menu anterior')
 
-def triggerClient(action):
-    cliente = buscarCliente(lista_clientes, setId(lista_clientes))
-    if cliente is None:
+def triggerClientState(action):
+    found_client = buscarCliente(lista_clientes, setId())
+    if found_client is None:
         print('Cliente no encontrado. Volviendo al menu anterior')
         return
-    eliminate_or_activate = 
-    if not(ask(f'Estas seguro de querer eliminar al usuario {cliente.getName()}?')):
-def triggerEliminarCliente():
-    cliente = buscarCliente(lista_clientes, setId(lista_clientes))
-    if cliente is None:
-        print('Cliente no encontrado. Volviendo al menu anterior')
+    if found_client.getBand() == False and action == 'off':
+        print('No puedes eliminar a un cliente ya eliminado.')
         return
-    if not(ask(f'Estas seguro de querer eliminar al usuario {cliente.getName()}?')):
+    if found_client.getBand() == True and action == 'on':
+        print('No puedes reactivar a un cliente ya activado.')
         return
-    for x, client in enumerate(lista_clientes):
-        if client.getId() == cliente.getId():
-            lista_clientes[x].offBand()
-            break
-    print('Cliente eliminado del sistema.')
-    
-def triggerActivarCliente():
-    cliente = buscarCliente(lista_clientes, setId(lista_clientes))
-    if cliente is None:
-        print('Cliente no encontrado. Volviendo al menu anterior')
+    eliminate_or_activate = 'eliminar' if action == 'off' else 'activar'
+    if not(ask(f'Estas seguro de querer {eliminate_or_activate} al usuario {found_client.getName()}?')):
         return
-    if not(ask(f'Estas seguro de querer activar al usuario {cliente.getName()}?')):
-        return
-    for x, client in enumerate(lista_clientes):
-        if client.getId() == cliente.getId():
-            lista_clientes[x].onBand()
-            break
-    print('Cliente reactivado.')
-
+    for x, current_client in enumerate(lista_clientes):
+        if current_client.getId() == found_client.getId():
+            if eliminate_or_activate == 'eliminar':
+                lista_clientes[x].offBand()
+                print('Cliente eliminado del sistema satisfactoriamente')
+            else:
+                lista_clientes[x].onBand()
+                print('Cliente reactivado satisfactoriamente')
+            return
 def updateAllClients():
     for cliente in lista_clientes:
         cliente.updateServices()
+        0
+def addService(type_of_payment):
+    cliente = buscarCliente(lista_clientes, setId())
+    if cliente is None:
+        return
+    for x, current_client in enumerate(lista_clientes):
+        if current_client.getId() == cliente.getId():
+            lista_clientes[x].addService(type_of_payment)
+            print(f'Servicio agregado con exito al usuario {cliente.getName()}')
 
     

@@ -350,26 +350,6 @@ def creatinaPolvo():
 
 #End of submenu
 
-def menuServicios():
-    print('Menu de cuotas')
-    print('1. Formato Mensual')
-    print('2. Formato Quincenal')
-    print('3. Formato Semanal')
-    print('4. Formato Diario')
-    print('5. Volver a Menu Anterior')
-    op = validarNumero('Digite una opcion valida: ')
-    match op:
-        case 1:
-            print('Mensualidad - 30 dias')
-        case 2:
-            print('Quincenal - 15 dias')
-        case 3:
-            print('Semanal - 7 dias')
-        case 4:
-            print('Diario')
-        case 5:
-            print('Volviendo al menu anterior')
-            return
 
 def menuProductos():
     
@@ -420,43 +400,4 @@ def menuConfiguracion():
     print('Menu de configuracion')
 
 
-def menuPrincipal():
-    print('Bienvenido a Arnold Gym')
-    print('1. Agregar cliente')
-    print('2. Editar cliente')
-    print('3. Mostrar cliente')
-    print('4. Eliminar cliente')
-    print('5. Activar cliente')
-    print('6. Menu de Servicios')
-    print('7. Menu de Productos')
-    print('8. Menu de Asesoramientos')
-    print('9. Menu de Configuracion')
-    print('10. Salir')
-    op = validarNumero('Digite una opcion valida: ')
-    match op:
-        case 1:
-            lista_clientes.append(Cliente())
-        case 2:
-            editarCliente()
-        case 3:
-            cliente = buscarCliente(lista_clientes, setId())
-            if cliente is None:
-                return
-            cliente.showClient()
-        case 4:
-            triggerEliminarCliente()
-        case 5:
-            triggerActivarCliente()
-        case 6:
-            menuServicios()
-        case 7:
-            menuProductos()
-        case 8:
-            menuAsesoramientos()
-        case 9:
-            menuConfiguracion()
-        case 10:
-            #codigo para guardar datos en un archivo
-            exit('Saliendo del programa')
-        case _:
-            print('Valor invalido. Volver a intentar')
+
