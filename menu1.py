@@ -15,11 +15,12 @@ def menuPrincipal():
     print('3. Mostrar cliente')
     print('4. Eliminar cliente')
     print('5. Activar cliente')
-    print('6. Menu de Servicios')
-    print('7. Menu de Productos')
-    print('8. Menu de Asesoramientos')
-    print('9. Menu de Configuracion')
-    print('10. Salir')
+    print('6. Mostrar todos los clientes')
+    print('7. Menu de Servicios')
+    print('8. Menu de Productos')
+    print('9. Menu de Asesoramientos')
+    print('10. Menu de Configuracion')
+    print('11. Salir')
     op = validarNumero('Digite una opcion valida: ')
     match op:
         case 1:
@@ -36,14 +37,16 @@ def menuPrincipal():
         case 5:
             triggerClientState('on')
         case 6:
-            menuServicios()
+            showAllClients()
         case 7:
-            menuProductos()
+           menuServicios()
         case 8:
-            print('Menu de asesormamientos WU')
+             menuProductos()
         case 9:
-            print('Menu de configuracion WU')
+           print('Menu de asesormamientos WU')
         case 10:
+             print('Menu de configuracion WU')
+        case 11:
             #codigo para guardar datos en un archivo
             exit('Saliendo del programa')
         case _:

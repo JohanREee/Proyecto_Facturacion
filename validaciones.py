@@ -4,6 +4,18 @@ FORTKNIGHT = 'fortknight'
 WEEK = 'week'
 DAY = 'day'
 
+def ask(message):
+    print(message)
+    print('1. Si\n2. No')
+    op = validarNumero('Digite una opcion valida: ')
+    match op:
+        case 1:
+            return True
+        case 2:
+            return False
+        case _:
+            print('Valor invalido. Volviendo al menu anterior')
+
 def decoratorvalidate(function):
     def wrap(*args, **kwargs):
         while True:
@@ -121,9 +133,16 @@ def fileMonthlyPayment(type_of_payment):
             return mensualidad[2], 'week'
         case 'day':
             return mensualidad[3], 'day'
-'''
-def libraProteina(valor, cantidad_libras):
-    return valor * cantidad_libras
-'''
-
+def fileCounseling(type_of_counseling):
+    valor = validarNumero(f'Digite la cantidad en $ para el asesoramiento {type_of_counseling}: ')
+    #Preguntar
+    match type_of_counseling:
+        case 'Full Arnold':
+            pass
+        case 'Full Body':
+            pass
+        case 'Tonificar':
+            pass
+        case 'Basico':
+            pass
    

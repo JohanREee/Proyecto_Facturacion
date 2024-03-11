@@ -15,10 +15,11 @@ class Cliente:
         global conteo_cliente
         self.nombre_completo = v.validarCadena('Digite el nombre del cliente: ')
         self.edad = v.validarNumero('Digite la edad del cliente: ')
-        self.__cedula = v.validarCedula('Digite la cedula del cliente: ',lista_clientes)
-        self.__servicios = {"Servicios_activos": [], 'Asesoramientos_activos': []}        
+        self.__cedula = v.validarCedula('Digite la cedula del cliente: ', lista_clientes)
+        self.__servicios = {"Servicios_activos": [], "Asesoramientos_activos": []}        
         self.__id_cliente = conteo_cliente
         self.__band = True
+        self.mensualidad_dias = 0
         conteo_cliente +=1
         print(f'Usuario {self.nombre_completo} agregado con exito.\n\n')
 
@@ -37,11 +38,20 @@ class Cliente:
     def updateServices(self):
         for mensualidad in self.__servicios["Servicios_activos"]:
             if t.validateTime(mensualidad[2]):
+                match mensualidad[0]:
+                    case 'Mensual':
+                        self.mensualidad_dias -=30
+                    case 'Quincenal':
+                        self.mensualidad_dias -=15
+                    case 'Semanal':
+                        self.mensualidad_dias -=7
+                    case 'Diario':
+                        self.mensualidad_dias -=1
                 del mensualidad
 
     def showClient(self, bypass = False):#bypass = True for showing ALL clients without asking
-        if bypass or not self.getBand():
-            if not(ask('Este usuario ha sido eliminado del sistema. Desea mostrarlo?')):
+        if not bypass or not self.getBand():
+            if not(v.ask('Este usuario ha sido eliminado del sistema. Desea mostrarlo?')):
                 return
         print(f'\nNombre: {self.nombre_completo}')
         print(f'Edad: {self.edad}')
@@ -85,10 +95,9 @@ class Cliente:
     def onBand(self):
         self.__band = True
     def addService(self, type_of_payment):
-        list_payment = m.generarMembresia(type_of_payment,self.getId())
+        list_payment, self.mensualidad_dias = m.generarMembresia(type_of_payment,self.mensualidad_dias)
         self.__servicios['Servicios_activos'].append(list_payment)
-
-
+        
 def digitarCedula():
     cedula = str(input('Digite la cedula que desea buscar: '))
     return cedula
@@ -112,22 +121,10 @@ def editarCliente():
         print('Cliente no encontrado. Volviendo al menu anterior')
         return
     print(f'Opciones a editar para el cliente{cliente.nombre_completo}:')
-    print('1.Nombre\n2.Edad\nCedula')
+    print('1.Nombre\n2.Edad\n3. Cedula')
     op = v.validarNumero('Seleccione una opcion valida: ')
     cliente.editClient(op)
     print('Cliente editado exitosamente')
-
-def ask(message):
-    print(message)
-    print('1. Si\n2. No')
-    op = v.validarNumero('Digite una opcion valida: ')
-    match op:
-        case 1:
-            return True
-        case 2:
-            return False
-        case _:
-            print('Valor invalido. Volviendo al menu anterior')
 
 def triggerClientState(action):
     found_client = buscarCliente(lista_clientes, setId())
@@ -141,7 +138,7 @@ def triggerClientState(action):
         print('No puedes reactivar a un cliente ya activado.')
         return
     eliminate_or_activate = 'eliminar' if action == 'off' else 'activar'
-    if not(ask(f'Estas seguro de querer {eliminate_or_activate} al usuario {found_client.getName()}?')):
+    if not(v.ask(f'Estas seguro de querer {eliminate_or_activate} al usuario {found_client.getName()}?')):
         return
     for x, current_client in enumerate(lista_clientes):
         if current_client.getId() == found_client.getId():
@@ -165,4 +162,6 @@ def addService(type_of_payment):
             lista_clientes[x].addService(type_of_payment)
             print(f'Servicio agregado con exito al usuario {cliente.getName()}')
 
-    
+def showAllClients():
+    for cliente in lista_clientes:
+        cliente.showClient(bypass = True)
