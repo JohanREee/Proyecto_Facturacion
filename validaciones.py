@@ -1,4 +1,5 @@
 import re
+from archivo import createFilesDirectory
 MONTH = 'month'
 FORTKNIGHT = 'fortknight'
 WEEK = 'week'
@@ -89,16 +90,20 @@ def scriptPath(dir = None, file = None):
 def loadJSONProduct(producto_clasificacion):
     script_path = scriptPath('files','nombre_productos.json')
     file = readFile(script_path) 
+    if file is None:
+        createFilesDirectory()
+        dict_product_loaded = loadJSONProduct(producto_clasificacion)
+        return dict_product_loaded
     j_file = j.load(file)
+    file.close()
     producto_clasificacion_cargado = j_file[producto_clasificacion] 
-    set_producto_cargado = (producto for producto in producto_clasificacion_cargado.keys())
-    
-    return set_producto_cargado###
+    dict_producto_cargado = {producto : producto_clasificacion_cargado[producto] for producto in producto_clasificacion_cargado}
+    return dict_producto_cargado###
 
 def solicitarProducto():
     set_producto = loadJSONProduct('Productos_Tarros_Total')
     for producto in set_producto:
-        print(producto, end=',')
+        print(f'{producto} ', end=',')
     print('\n')
 
     producto = str(input('Digite un producto de la lista: '))
@@ -145,4 +150,11 @@ def fileCounseling(type_of_counseling):
             pass
         case 'Basico':
             pass
-   
+
+def generateSet(data, dict_key = False):
+    if dict_key:
+        return (dat for dat in data)    
+    return (dat for dat in data.keys())
+
+def showDate(time):
+    print(f"{time[2]}/{time[1]}/{time[0]}")

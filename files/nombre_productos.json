@@ -1,1 +1,39 @@
-{"Productos_libreados": {"WheyProteinELV": 460, "IsolateProteinRule1": 440, "WheyProteinRN": 455, "Rule1MassGainer": 255, "KingMassRN": 240, "DymatizeMassGainer": 250}, "Productos_pastilla": {"TribulusRN": 10, "AnimalPak": 40, "Tribulus MyProtein": 11, "ONCreatineCapsules": 40, "EVLCreatine1000": 40}, "Productos_scoops": {"C4": 45, "Psychotic": 50, "MicronozedLGlutamine": 45, "CreatinaRN": 23, "CreatinaMuscleTech": 25, "CreatinaRightNutrition": 20, "CreatineaRule1": 22}, "Productos_Tarros_Total": {"C4_Tarro": 1500, "Psychotic_Tarro": 1600, "MicronizedLGlutamine_Tarro": 1550, "TribulusRN_Tarro": 720, "TribulusMyProtein_Tarro": 800, "Barra_Magnesio": 200, "AnimalPak_Tarro": 1950, "CreatinaRN_Tarro": 1100, "CreatinaMuscleTech_Tarro": 1200, "CreatinaRightNutrition_Tarro": 950, "CreatinaRule1_Tarro": 1000}}
+{
+    "Libreados": {
+        "Whey Protein ELV": 460,
+        "Isolate Protein Rule 1": 440,
+        "Whey Protein RN": 455,
+        "Rule 1 Mass Gainer": 255,
+        "King Mass RN": 240,
+        "Dymatize Mass Gainer": 250
+    },
+    "Pastilla": {
+        "Tribulus RN": 10,
+        "Animal Pak": 40,
+        "Tribulus My Protein": 11,
+        "ON Creatine Capsules": 40,
+        "EVL Creatine 1000": 40
+    },
+    "Scoops": {
+        "C4": 45,
+        "Psychotic": 50,
+        "Micronozed L Glutamine": 45,
+        "Creatina RN": 23,
+        "Creatina Muscle Tech": 25,
+        "Creatina Right Nutrition": 20,
+        "Creatinea Rule 1": 22
+    },
+    "Tarros": {
+        "C4": 1500,
+        "Psychotic": 1600,
+        "Micronized L Glutamine": 1550,
+        "Tribulus RN": 720,
+        "Tribulus My Protein": 800,
+        "Barra Magnesio": 200,
+        "Animal Pak": 1950,
+        "Creatina RN": 1100,
+        "Creatina Muscle Tech": 1200,
+        "Creatina Right Nutrition": 950,
+        "Creatina Rule 1": 1000
+    }
+}

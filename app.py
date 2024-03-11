@@ -1,8 +1,10 @@
 from menu1 import menuPrincipal
 from cliente import updateAllClients
+from archivo import createFilesDirectory
 import threading as thr
 import time
 
+createFilesDirectory()
 def updating(): #Using tkinter for count 5 minutes before updating
     while True:
         updateAllClients()

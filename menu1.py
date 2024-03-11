@@ -2,10 +2,7 @@ from cliente import *
 from validaciones import *
 from archivo import *
 import time_form as t
-lista_productos_libreados = []
-lista_productos_scoops = []
-lista_productos_pastillas = []
-lista_productos_tarros = []
+n_factura = 1
 #dale
 
 def menuPrincipal():
@@ -87,67 +84,50 @@ def menuProductos():
         op = validarNumero('Digite una opcion valida: ')
         match op:
             case 1:
-                solicitarProducto('Productos_libreados')
+                solicitarProducto("Libreados")
             case 2:
-                solicitarProducto('Productos_scoops')
+                solicitarProducto("Scoops")
             case 3:
-                solicitarProducto('Productos_pastillas')
+                solicitarProducto("Pastilla")
             case 4:
-                solicitarProducto('Productos_Tarros_Total')
+                solicitarProducto("Tarros")
             case 5:
                 print('Volviendo al Menu Anterior')
                 return
-            
+
 def solicitarProducto(producto_clasificacion):
-    set_producto = loadJSONProduct(producto_clasificacion)
-    for producto in set_producto:
-        print(producto, end=',')
+    dict_producto = loadJSONProduct(producto_clasificacion)
+    set_product = v.generateSet(dict_producto, True)
+    llave, valor = solicitarValorProducto(dict_producto, set_product)
+    if llave is None:
+        return
+    cantidad = int(input(f'Digite la cantidad para el producto {llave}: '))
+    func = lambda valor_producto, cantidad: valor_producto * cantidad
+    price = func(valor, cantidad)
+    generarFactura(llave, valor, price)
+
+def generarFactura(producto, cantidad, precio):
+    global n_factura
+    current_time = t.getCurrentTime()
+    print(f'Arnold Gym --- {v.showDate(current_time)}')
+    print(f'Factura N°{n_factura}\n')
+    print(f'{producto} ------ {cantidad}')
+    print('\nImpuestos\n')
+    print('IVA : 15%')
+    total = (precio * cantidad)
+    total *= 0.15
+    print(f'Pago total: {total}')
+    n_factura +=1
+
+def solicitarValorProducto(dict_producto, set_product):
+    for producto_in_set in set_product:
+        print(f'{producto_in_set} ', end=',')
     print('\n')
     producto = str(input('Digite un producto de la lista: '))
-    if not(producto in set_producto):
-        print('Producto no encontrado. Volviendo al menu anterior')
-        return
-    x = None
-    match producto_clasificacion:
-        case 'Productos_libreados':
-            x = 'libras'
-        case 'Productos_scoops':
-            x = 'scoops'
-        case 'Productos_pastillas':
-            x = 'pastillas'
-        case 'Productos_Tarros_Total':
-            x = 'tarros'
-    cantidad = validarNumero(f'Digite la cantidad de {x} que desea: ')
-
-''''
-def setListaPastillas():
-    return {producto for producto in lista_productos_pastillas}
-def solicitarProducto():
-    set_lista_pastillas = setListaPastillas()
-    for producto in set_lista_pastillas:
-        print(producto, end=',')
-    print('\n')
-
-    producto = str(input('Digite un producto de la lista: '))
-    if not(producto in set_lista_pastillas):
-        print('Producto no encontrado. Volviendo al menu anterior')
-        return
+    print(producto)
+    for product in dict_producto.keys():
+        if product == producto:
+            return producto, dict_producto[producto]
+    print('Producto no encontrado en la lista.')
+    return None, None
     
-    libra = str(input(f'Digite la cantidad de libras para el producto {producto}: '))
-
-
-def setListaTarros():
-    return {producto for producto in lista_productos_tarros}
-def solicitarProducto():
-    set_lista_tarros = setListaTarros()
-    for producto in set_lista_tarros:
-        print(producto, end=',')
-    print('\n')
-
-    producto = str(input('Digite un producto de la lista: '))
-    if not(producto in set_lista_tarros):
-        print('Producto no encontrado. Volviendo al menu anterior')
-        return
-    
-    libra = str(input(f'Digite la cantidad de libras para el producto {producto}: '))
-'''
