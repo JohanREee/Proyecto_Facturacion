@@ -36,11 +36,11 @@ def menuPrincipal():
         case 6:
             showAllClients()
         case 7:
-           menuServicios()
+            menuServicios()
         case 8:
-             menuProductos()
+            menuProductos()
         case 9:
-           print('Menu de asesormamientos WU')
+            menuAsesoramientos()
         case 10:
              print('Menu de configuracion WU')
         case 11:
@@ -72,7 +72,26 @@ def menuServicios():
                 return
             case _:
                 print('Valor invalido. Volver a intentar')
-
+def menuAsesoramientos():
+    while True:
+        print("Menu de asesoramientos")
+        print("1. Full Arnold")
+        print("2. Full Body")
+        print("3. Tonificar")
+        print("4. Asesoramiento Basico")
+        op = validarNumero("Digite una opcion valida: ")
+        match op:
+            case 1:
+                addConsultancy("Full Arnold")
+            case 2:
+                addConsultancy("Full Body")
+            case 3:
+                addConsultancy("Full Tonificar")
+            case 4:
+                addConsultancy("Asesoramiento Basico")
+            case 5:
+                print("Volviendo al menu anterior")
+                return
 def menuProductos():
     
         print('Menu de productos')

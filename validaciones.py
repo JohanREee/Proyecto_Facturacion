@@ -29,10 +29,23 @@ def decoratorvalidate(function):
     return wrap
 
 @decoratorvalidate
-def validarNumero(message):
+def validarNumero(message, age = False, services = False):
     numero = int(input(message))
+    if age:
+        if not (0<numero<100):
+            raise ValueError
+        return numero
+    if services:
+        if numero == 1 or numero == 2:
+            return numero
+        else:
+            raise ValueError
     return numero
 
+@decoratorvalidate
+def validarFloat(message):
+    numero = float(input(message))
+    return numero
 @decoratorvalidate
 def validarCadena(message):
     cadena = str(input(message))
@@ -65,6 +78,7 @@ def validarCedula(message, lista_cliente):
 
 #files
 import os
+from os import getcwd
 import json as j
 def decoratorFile(function):
     def wrap(*args, **kwargs):
@@ -81,12 +95,10 @@ def decoratorFile(function):
 def readFile(file_name):
     return open(file_name, 'r')
 
-def scriptPath(dir = None, file = None):
-    #Estas lineas manejan el acceso a archivos sin importar el sistema operativo(Usa ruta absoluta, no relativa)
-    script_dir = os.path.dirname(os.path.abspath(__file__))#
+def scriptPath(dir = str, file = str):
+    script_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(script_dir, dir, file) 
-    #Ya sabes que en windows la ruta de un archivo es tipo: Users/Johan/archivo.py, pero en mac no es asi
-
+    
 def loadJSONProduct(producto_clasificacion):
     script_path = scriptPath('files','nombre_productos.json')
     file = readFile(script_path) 
@@ -157,4 +169,4 @@ def generateSet(data, dict_key = False):
     return (dat for dat in data.keys())
 
 def showDate(time):
-    print(f"{time[2]}/{time[1]}/{time[0]}")
+    print(f"{time[2]}/{time[1]}/{time[0]}", end="")

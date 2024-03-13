@@ -1,6 +1,7 @@
 import validaciones as v
 import mensualidad as m
 import time_form as t
+from Asesoramientos import generarAsesoramiento
 NAME = 'nombre'
 AGE = 'edad'
 ID = 'cedula'
@@ -20,6 +21,7 @@ class Cliente:
         self.__id_cliente = conteo_cliente
         self.__band = True
         self.mensualidad_dias = 0
+        self.asesoramiento_dias = 0
         conteo_cliente +=1
         print(f'Usuario {self.nombre_completo} agregado con exito.\n\n')
 
@@ -48,7 +50,10 @@ class Cliente:
                     case 'Diario':
                         self.mensualidad_dias -=1
                 del mensualidad
-
+        for asesoramiento in self.__servicios["Asesoramientos_activos"]:
+            if t.validateTime(asesoramiento[2]):
+                self.asesoramiento_dias -=30
+                del asesoramiento
     def showClient(self, bypass = False):#bypass = True for showing ALL clients without asking
         if not bypass or not self.getBand():
             if not(v.ask('Este usuario ha sido eliminado del sistema. Desea mostrarlo?')):
@@ -59,37 +64,44 @@ class Cliente:
         print(f'ID del cliente: {self.getIdClient()}\n')
         print('Servicios activos: ')
         self.showMonthlyPayment()
-        #add services
-        #  return [amount, name_payment, notification_time]
+        self.showConsultancies()
     def showMonthlyPayment(self):
         for mensualidad in self.__servicios["Servicios_activos"]:
-            dia = mensualidad[2][2] 
-            mes = mensualidad[2][1]
-            year = mensualidad[2][0]
             print(f'Tipo de pago: {mensualidad[0]}')
             print(f'Cantidad a pagar: C${mensualidad[1]}')
-            print(f'Fecha de expiracion: {dia}/{mes}/{year}')
+            print(f'Fecha de expiracion: {v.showDate(mensualidad[2])}\n')
+    def showConsultancies(self):
+        for asesoramiento in self.__servicios["Asesoramientos_activos"]:
+            print(f'Tipo de asesoramiento: {asesoramiento[0]}')
+            print(f"Cantidad a pagar: ${asesoramiento[1]}")
+            print(f"Fecha de expiracion: {v.showDate(asesoramiento[2])}\n")
     def editName(self):
         nombre = v.validarCadena('Digite el nuevo nombre del cliente: ')
         print(f'El nombre {self.nombre_completo} ha sido modificado por {nombre}')
         return nombre
     def editAge(self):
-        edad = v.validarNumero('Digite la nueva edad del cliente: ')
+        edad = v.validarNumero('Digite la nueva edad del cliente: ', age=True)
         print(f'La edad {self.edad} ha sido modificada por {edad}')
         return edad
-    def editId(self):
-        id = v.validarCedula('Digite la nueva cedula del cliente: ', lista_clientes)
-        print(f'La cedula {self.getId()} ha sido modificada por {id}')
-        return id
-    
+    def editMonthlyPayment(self):
+        pass
+    def editServices(self):
+        print("1. Servicios")
+        print("2. Asesoramientos")
+        op = v.validarNumero("Digite la opcion que desea modificar: ")
+        match op:
+            case 1:
+                pass
     def editClient(self, edit):
-        if edit == 1:
-            self.nombre_completo = self.editName()
-        elif edit == 2:
-            self.edad = self.editAge()
-        elif edit == 3:
-            self.__cedula = self.editId()
-
+        match edit:
+            case  1:
+                self.nombre_completo = self.editName()
+            case  2:
+                self.edad = self.editAge()
+            case  3:
+                pass
+            case 4:
+                pass
     def offBand(self):
         self.__band = False
     def onBand(self):
@@ -97,6 +109,9 @@ class Cliente:
     def addService(self, type_of_payment):
         list_payment, self.mensualidad_dias = m.generarMembresia(type_of_payment,self.mensualidad_dias)
         self.__servicios['Servicios_activos'].append(list_payment)
+    def addConsultancy(self, type_of_consultancy):
+        list_consultancy, self.asesoramiento_dias = generarAsesoramiento(type_of_consultancy, self.asesoramiento_dias)
+        self.__servicios['Asesoramientos_activos'].append(list_consultancy)
         
 def digitarCedula():
     cedula = str(input('Digite la cedula que desea buscar: '))
@@ -161,7 +176,17 @@ def addService(type_of_payment):
         if current_client.getId() == cliente.getId():
             lista_clientes[x].addService(type_of_payment)
             print(f'Servicio agregado con exito al usuario {cliente.getName()}')
+            return
 
+def addConsultancy(type_of_consultancy):
+    cliente = buscarCliente(lista_clientes, setId())
+    if cliente is None:
+        return
+    for x, current_client in enumerate(lista_clientes):
+        if current_client.getId() == cliente.getId():
+            lista_clientes[x].addConsultancy(type_of_consultancy)
+            print(f'Asesoramiento agregado con exito al usuario {cliente.getName()}')
+            return
 def showAllClients():
     for cliente in lista_clientes:
         cliente.showClient(bypass = True)

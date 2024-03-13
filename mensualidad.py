@@ -7,8 +7,6 @@ from archivo import createFilesDirectory
 def generarMembresia(type_of_payment,mensualidad_dias):
     amount, name_payment = v.fileMonthlyPayment(type_of_payment)
     if amount is None:
-        if not(v.ask('No se ha encontrado el archivo "mensualidad.json".\nDesea crearlo?')):
-                return None
         createFilesDirectory()
         list_payment = generarMembresia(type_of_payment,mensualidad_dias)
         return list_payment
