@@ -18,7 +18,7 @@ def AsesoramientoBasico():
 
 '''
 
-from validaciones import validarFloat, decoratorvalidate
+from validaciones import decoratorvalidate
 from time_form import getCurrentTime, addTime
 
 @decoratorvalidate
@@ -35,3 +35,5 @@ def generarAsesoramiento(type_of_consultancy, asesoramiento_dias):
     expiration_time = addTime(time, asesoramiento_dias)
     return [type_of_consultancy, price, expiration_time], asesoramiento_dias
         
+if __name__ == "__main__":
+    pass

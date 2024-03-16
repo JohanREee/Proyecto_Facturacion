@@ -4,17 +4,17 @@ from archivo import createFilesDirectory
 import threading as thr
 import time
 
-createFilesDirectory()
 def updating(): #Using tkinter for count 5 minutes before updating
     while True:
         updateAllClients()
-        time.sleep(300)
+        time.sleep(60)
 
 def mainMenuCode():
+    createFilesDirectory()
     while True:
         menuPrincipal()
 
-th_update = thr.Thread(target=updating,)
+th_update = thr.Thread(target=updating)
 th_menu = thr.Thread(target=mainMenuCode)
 
 th_update.start()

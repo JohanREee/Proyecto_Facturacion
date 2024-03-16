@@ -30,7 +30,8 @@ def generarMembresia(type_of_payment,mensualidad_dias):
     notification_time= t.addTime(current_time, day_amount)
     return [formal_name_payment,amount, notification_time], mensualidad_dias + day_amount
 
-
+if __name__ == "__main__":
+    pass
             
         
 

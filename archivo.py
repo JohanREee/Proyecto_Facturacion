@@ -1,12 +1,86 @@
-import validaciones as v
 import os
 import json as j
+def decoratorFile(function):
+    def wrap(*args, **kwargs):
+        try:
+            result = function(*args, **kwargs)
+        except FileNotFoundError:
+            print('Archivo no encontrado')
+            return None
+        else:
+            return result
+    return wrap
+
+@decoratorFile
+def readFile(file_name):
+    return open(file_name, 'r')
+
+def scriptPath(*dirs):
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(script_dir, *dirs) 
+    
+def loadJSONProduct(producto_clasificacion):
+    script_path = scriptPath('files','nombre_productos.json')
+    file = readFile(script_path) 
+    if file is None:
+        createFilesDirectory()
+        dict_product_loaded = loadJSONProduct(producto_clasificacion)
+        return dict_product_loaded
+    j_file = j.load(file)
+    file.close()
+    producto_clasificacion_cargado = j_file[producto_clasificacion] 
+    dict_producto_cargado = {producto : producto_clasificacion_cargado[producto] for producto in producto_clasificacion_cargado}
+    return dict_producto_cargado###
+
+def solicitarProducto():
+    set_producto = loadJSONProduct('Productos_Tarros_Total')
+    for producto in set_producto:
+        print(f'{producto} ', end=',')
+    print('\n')
+
+    producto = str(input('Digite un producto de la lista: '))
+    if not(producto in set_producto):
+        print('Producto no encontrado. Volviendo al menu anterior')
+        return
+    libra = str(input(f'Digite la cantidad de libras para el producto {producto}: '))
+
+def loadJSONMonthlyPayment():
+    script_path = scriptPath('files', 'mensualidad.json')
+    file = readFile(script_path)
+    if file is None:
+        return None
+    j_file = j.load(file)
+    month = j_file["Monthly"]
+    fortknight = j_file["Fortknight"]
+    week = j_file["Week"]
+    day = j_file["Daily"]
+    file.close()
+    return [month,fortknight,week,day]
+
+def fileMonthlyPayment(type_of_payment):
+    mensualidad = loadJSONMonthlyPayment()
+    if mensualidad is None:
+        return None, None
+    match type_of_payment:
+        case 'month':
+            return mensualidad[0], 'month'
+        case 'fortknight':
+            return mensualidad[1], 'fortknight'
+        case 'week':
+            return mensualidad[2], 'week'
+        case 'day':
+            return mensualidad[3], 'day'
+
+def generateSet(data, dict_key = False):
+    if dict_key:
+        return (dat for dat in data)    
+    return (dat for dat in data.keys())
 
 def createFilesDirectory():
     if not(os.path.exists('files')):
-        os.makedirs(v.scriptPath('files'))
-    crearArchivoMensualidad(v.scriptPath('files','mensualidad.json'))
-    crearArchivoProductos(v.scriptPath('files','nombre_productos.json'))
+        os.makedirs(scriptPath('files'))
+    crearArchivoMensualidad(scriptPath('files','mensualidad.json'))
+    crearArchivoProductos(scriptPath('files','nombre_productos.json'))
     #later create clientes.json
 
 def crearArchivoMensualidad(script_path):
@@ -65,3 +139,5 @@ def crearArchivoProductos(script_path):
     file.close()
 
 
+if __name__ == "__main__":
+    pass

@@ -35,3 +35,9 @@ def validateTime(expiration_time): #True, False
     elif(current_day > expiration_day):
         return True
     return False
+
+def showDate(time):
+    return f"{time[2]}/{time[1]}/{time[0]}"
+
+if __name__ == "__main__":
+    pass

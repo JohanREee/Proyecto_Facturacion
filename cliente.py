@@ -1,7 +1,7 @@
 import validaciones as v
 import mensualidad as m
 import time_form as t
-from Asesoramientos import generarAsesoramiento
+from asesoramientos import generarAsesoramiento
 NAME = 'nombre'
 AGE = 'edad'
 ID = 'cedula'
@@ -55,7 +55,7 @@ class Cliente:
                 self.asesoramiento_dias -=30
                 del asesoramiento
     def showClient(self, bypass = False):#bypass = True for showing ALL clients without asking
-        if not bypass or not self.getBand():
+        if bypass or self.getBand() == False:
             if not(v.ask('Este usuario ha sido eliminado del sistema. Desea mostrarlo?')):
                 return
         print(f'\nNombre: {self.nombre_completo}')
@@ -64,17 +64,18 @@ class Cliente:
         print(f'ID del cliente: {self.getIdClient()}\n')
         print('Servicios activos: ')
         self.showMonthlyPayment()
+        print("Asesoramientos activos: ")
         self.showConsultancies()
     def showMonthlyPayment(self):
         for mensualidad in self.__servicios["Servicios_activos"]:
             print(f'Tipo de pago: {mensualidad[0]}')
             print(f'Cantidad a pagar: C${mensualidad[1]}')
-            print(f'Fecha de expiracion: {v.showDate(mensualidad[2])}\n')
+            print(f'Fecha de expiracion: {t.showDate(mensualidad[2])}\n')
     def showConsultancies(self):
         for asesoramiento in self.__servicios["Asesoramientos_activos"]:
             print(f'Tipo de asesoramiento: {asesoramiento[0]}')
             print(f"Cantidad a pagar: ${asesoramiento[1]}")
-            print(f"Fecha de expiracion: {v.showDate(asesoramiento[2])}\n")
+            print(f"Fecha de expiracion: {t.showDate(asesoramiento[2])}")
     def editName(self):
         nombre = v.validarCadena('Digite el nuevo nombre del cliente: ')
         print(f'El nombre {self.nombre_completo} ha sido modificado por {nombre}')
@@ -98,10 +99,6 @@ class Cliente:
                 self.nombre_completo = self.editName()
             case  2:
                 self.edad = self.editAge()
-            case  3:
-                pass
-            case 4:
-                pass
     def offBand(self):
         self.__band = False
     def onBand(self):
@@ -190,3 +187,6 @@ def addConsultancy(type_of_consultancy):
 def showAllClients():
     for cliente in lista_clientes:
         cliente.showClient(bypass = True)
+
+if __name__ == "__main__":
+    pass
