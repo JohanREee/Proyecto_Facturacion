@@ -1,5 +1,6 @@
 import os
 import json as j
+
 def decoratorFile(function):
     def wrap(*args, **kwargs):
         try:
@@ -19,7 +20,7 @@ def scriptPath(*dirs):
     script_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(script_dir, *dirs) 
     
-def loadJSONProduct(producto_clasificacion):
+def loadJSONProduct(producto_clasificacion): 
     script_path = scriptPath('files','nombre_productos.json')
     file = readFile(script_path) 
     if file is None:
@@ -32,19 +33,7 @@ def loadJSONProduct(producto_clasificacion):
     dict_producto_cargado = {producto : producto_clasificacion_cargado[producto] for producto in producto_clasificacion_cargado}
     return dict_producto_cargado###
 
-def solicitarProducto():
-    set_producto = loadJSONProduct('Productos_Tarros_Total')
-    for producto in set_producto:
-        print(f'{producto} ', end=',')
-    print('\n')
-
-    producto = str(input('Digite un producto de la lista: '))
-    if not(producto in set_producto):
-        print('Producto no encontrado. Volviendo al menu anterior')
-        return
-    libra = str(input(f'Digite la cantidad de libras para el producto {producto}: '))
-
-def loadJSONMonthlyPayment():
+def loadJSONMonthlyPayment():####
     script_path = scriptPath('files', 'mensualidad.json')
     file = readFile(script_path)
     if file is None:
@@ -55,7 +44,7 @@ def loadJSONMonthlyPayment():
     week = j_file["Week"]
     day = j_file["Daily"]
     file.close()
-    return [month,fortknight,week,day]
+    return [month,fortknight,week,day]###
 
 def fileMonthlyPayment(type_of_payment):
     mensualidad = loadJSONMonthlyPayment()
@@ -73,8 +62,8 @@ def fileMonthlyPayment(type_of_payment):
 
 def generateSet(data, dict_key = False):
     if dict_key:
-        return (dat for dat in data)    
-    return (dat for dat in data.keys())
+        return (dat for dat in data) # Nombre y valor monetario
+    return (dat for dat in data.keys()) #Nombre de producto
 
 def createFilesDirectory():
     if not(os.path.exists('files')):
@@ -82,6 +71,7 @@ def createFilesDirectory():
     crearArchivoMensualidad(scriptPath('files','mensualidad.json'))
     crearArchivoProductos(scriptPath('files','nombre_productos.json'))
     #later create clientes.json
+
 
 def crearArchivoMensualidad(script_path):
     type_of_payment = {

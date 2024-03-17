@@ -2,15 +2,14 @@ import validaciones as v
 import mensualidad as m
 import time_form as t
 from asesoramientos import generarAsesoramiento
-NAME = 'nombre'
-AGE = 'edad'
-ID = 'cedula'
+
 conteo_cliente = 1
 lista_clientes = []
 def modificarListaEmpleado(cliente_update, id_cliente):
     for x, cliente in enumerate(lista_clientes):
         if id_cliente == cliente.getIdClient():
             lista_clientes[x] = cliente_update
+            
 class Cliente:
     def __init__(self):
         global conteo_cliente
@@ -20,7 +19,7 @@ class Cliente:
         self.__servicios = {"Servicios_activos": [], "Asesoramientos_activos": []}        
         self.__id_cliente = conteo_cliente
         self.__band = True
-        self.mensualidad_dias = 0
+        self.mensualidad_dias = 0 
         self.asesoramiento_dias = 0
         conteo_cliente +=1
         print(f'Usuario {self.nombre_completo} agregado con exito.\n\n')
@@ -40,7 +39,7 @@ class Cliente:
     def updateServices(self):
         for mensualidad in self.__servicios["Servicios_activos"]:
             if t.validateTime(mensualidad[2]):
-                match mensualidad[0]:
+                match mensualidad[0]: 
                     case 'Mensual':
                         self.mensualidad_dias -=30
                     case 'Quincenal':
@@ -50,10 +49,12 @@ class Cliente:
                     case 'Diario':
                         self.mensualidad_dias -=1
                 del mensualidad
+
         for asesoramiento in self.__servicios["Asesoramientos_activos"]:
             if t.validateTime(asesoramiento[2]):
                 self.asesoramiento_dias -=30
                 del asesoramiento
+
     def showClient(self, bypass = False):#bypass = True for showing ALL clients without asking
         if bypass or self.getBand() == False:
             if not(v.ask('Este usuario ha sido eliminado del sistema. Desea mostrarlo?')):
@@ -84,28 +85,22 @@ class Cliente:
         edad = v.validarNumero('Digite la nueva edad del cliente: ', age=True)
         print(f'La edad {self.edad} ha sido modificada por {edad}')
         return edad
-    def editMonthlyPayment(self):
-        pass
-    def editServices(self):
-        print("1. Servicios")
-        print("2. Asesoramientos")
-        op = v.validarNumero("Digite la opcion que desea modificar: ")
-        match op:
-            case 1:
-                pass
     def editClient(self, edit):
         match edit:
             case  1:
                 self.nombre_completo = self.editName()
             case  2:
                 self.edad = self.editAge()
+
     def offBand(self):
         self.__band = False
     def onBand(self):
+
         self.__band = True
     def addService(self, type_of_payment):
         list_payment, self.mensualidad_dias = m.generarMembresia(type_of_payment,self.mensualidad_dias)
         self.__servicios['Servicios_activos'].append(list_payment)
+
     def addConsultancy(self, type_of_consultancy):
         list_consultancy, self.asesoramiento_dias = generarAsesoramiento(type_of_consultancy, self.asesoramiento_dias)
         self.__servicios['Asesoramientos_activos'].append(list_consultancy)
@@ -149,22 +144,25 @@ def triggerClientState(action):
     if found_client.getBand() == True and action == 'on':
         print('No puedes reactivar a un cliente ya activado.')
         return
+    
     eliminate_or_activate = 'eliminar' if action == 'off' else 'activar'
     if not(v.ask(f'Estas seguro de querer {eliminate_or_activate} al usuario {found_client.getName()}?')):
         return
+    
     for x, current_client in enumerate(lista_clientes):
         if current_client.getId() == found_client.getId():
             if eliminate_or_activate == 'eliminar':
                 lista_clientes[x].offBand()
                 print('Cliente eliminado del sistema satisfactoriamente')
-            else:
-                lista_clientes[x].onBand()
-                print('Cliente reactivado satisfactoriamente')
+                return
+            lista_clientes[x].onBand()
+            print('Cliente reactivado satisfactoriamente')
             return
+        
 def updateAllClients():
     for cliente in lista_clientes:
         cliente.updateServices()
-        0
+
 def addService(type_of_payment):
     cliente = buscarCliente(lista_clientes, setId())
     if cliente is None:
@@ -184,8 +182,9 @@ def addConsultancy(type_of_consultancy):
             lista_clientes[x].addConsultancy(type_of_consultancy)
             print(f'Asesoramiento agregado con exito al usuario {cliente.getName()}')
             return
+        
 def showAllClients():
-    for cliente in lista_clientes:
+    for cliente in lista_clientes: 
         cliente.showClient(bypass = True)
 
 if __name__ == "__main__":

@@ -43,9 +43,9 @@ def menuPrincipal():
         case 9:
             menuAsesoramientos()
         case 10:
-             print('Menu de configuracion WU')
+            print('Menu de WU')
         case 11:
-            #codigo para guardar datos en un archivo
+            #codigo para guardar datos en un archivo#
             exit('Saliendo del programa')
         case _:
             print('Valor invalido. Volver a intentar')
@@ -100,7 +100,7 @@ def menuProductos():
         print('2. Productos en Scoops')
         print('3. Productos en Pastillas')
         print('4. Productos en Tarro o Total')
-        print('5. Volver a Menu Anterior')
+        print('5. Volver a menu Anterior')
         op = validarNumero('Digite una opcion valida: ')
         match op:
             case 1:
@@ -115,5 +115,8 @@ def menuProductos():
                 print('Volviendo al Menu Anterior')
                 return
 
-
+def menuConfiguracion():
+    print('1. Editar servicios')
+    print('2. Editar productos')
+    print('3. Volver al Menu Anterior')
     
