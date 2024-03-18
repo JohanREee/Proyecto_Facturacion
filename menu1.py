@@ -3,7 +3,7 @@ from validaciones import *
 from archivo import *
 import time_form as t
 from producto import *
-from sys import exit as ex
+from configure import changePriceOfMonthlyPayment
 n_factura = 1
 #dale
 
@@ -106,8 +106,10 @@ def menuAsesoramientos():
             case 5:
                 print("Volviendo al menu anterior")
                 return
+            case _:
+                print("Valor invalido. Volver a intentar")
 def menuProductos():
-    
+    while True:
         print('Menu de productos')
         print('1. Productos Libreados')
         print('2. Productos en Scoops')
@@ -127,9 +129,56 @@ def menuProductos():
             case 5:
                 print('Volviendo al Menu Anterior')
                 return
-
+            case _:
+                print("Valor invalido. Volver a intentar")
 def menuConfiguracion():
-    print('1. Editar servicios')
-    print('2. Editar productos')
-    print('3. Volver al Menu Anterior')
-    
+    while True:
+        print("Menu de configuracion")
+        print('1. Menu de configuracion de mensualidad')
+        print('2. Menu de configuracion de productos')
+        print('3. Volver al menu anterior.')
+        op = validarNumero('Digite una opcion valida: ')
+        match op:
+            case 1:
+                menuConfiguracionMensualidad()
+            case 2:
+                menuConfiguracionProductos()
+            case 3:
+                print("Volviendo al menu anterior.")
+                return
+            case _:
+                print("Valor invalido. Volver a intentar")
+def menuConfiguracionMensualidad():
+    while True:
+        print("Menu de configuracion de mensualidad")
+        print('1. Cambiar precio')
+        print('2. Volver al menu anterior')
+        op = validarNumero('Digite una opcion valida: ')
+        match op:
+            case 1:
+                changePriceOfMonthlyPayment()
+            case 2:
+                print('Volviendo al menu anterior.')
+                return
+            case _:
+                print('Valor invalido. Volver a intentar')
+def menuConfiguracionProductos():
+    while True:
+        print("Menu de configuracion de productos")
+        print('1. Agregar producto')
+        print('2. Editar producto')
+        print('3. Eliminar producto')
+        print('4. Volver al menu anterior')
+        op = validarNumero('Digite una opcion valida: ')
+        match op:
+            case 1:
+                pass
+            case 2: 
+                pass
+            case 3:
+                pass
+            case 4:
+                print('Volviendo al menu anterior')
+                return
+            case _:
+                print('Valor invalido. Volver a intentar')
