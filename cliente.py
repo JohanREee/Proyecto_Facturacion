@@ -1,6 +1,9 @@
 import validaciones as v
 import mensualidad as m
 import time_form as t
+from os import path
+import json as j
+from archivo import scriptPath
 from asesoramientos import generarAsesoramiento
 
 conteo_cliente = 1
@@ -11,19 +14,35 @@ def modificarListaEmpleado(cliente_update, id_cliente):
             lista_clientes[x] = cliente_update
             
 class Cliente:
-    def __init__(self):
+    def __init__(self, load = None):
         global conteo_cliente
-        self.nombre_completo = v.validarCadena('Digite el nombre del cliente: ')
-        self.edad = v.validarNumero('Digite la edad del cliente: ')
-        self.__cedula = v.validarCedula('Digite la cedula del cliente: ', lista_clientes)
-        self.__servicios = {"Servicios_activos": [], "Asesoramientos_activos": []}        
-        self.__id_cliente = conteo_cliente
-        self.__band = True
-        self.mensualidad_dias = 0 
-        self.asesoramiento_dias = 0
+        if load is None:
+            self.nombre_completo = v.validarCadena('Digite el nombre del cliente: ')
+            self.edad = v.validarNumero('Digite la edad del cliente: ')
+            self.__cedula = v.validarCedula('Digite la cedula del cliente: ', lista_clientes)
+            self.__servicios = {"Servicios_activos": [], "Asesoramientos_activos": []}        
+            self.__id_cliente = conteo_cliente
+            self.__band = True
+            self.mensualidad_dias = 0 
+            self.asesoramiento_dias = 0
+            conteo_cliente +=1
+            print(f'Usuario {self.nombre_completo} agregado con exito.\n\n')
+            return
+        self.nombre_completo = load['Nombre completo']
+        self.edad = load['Edad']
+        self.__cedula = load['Cedula']
+        services = load['Servicios']
+        self.__servicios = {"Servicios_activos" : loadServices(services), 
+                            "Asesoramientos_activos": loadCounseling(services)}
+        self.__id_cliente = load['ID']
         conteo_cliente +=1
-        print(f'Usuario {self.nombre_completo} agregado con exito.\n\n')
-
+        self.__band = False if load['Band'] == 'False' else True
+        self.mensualidad_dias = 30
+        self.asesoramiento_dias = load['Dias de asesoramientos']
+        self.mensualidad_dias = load['Dias de mensualidad']
+        return
+    def getServices(self):
+        return self.__servicios
     def getBand(self):
         return self.__band
     
@@ -36,6 +55,11 @@ class Cliente:
     def getName(self):
         return self.nombre_completo
     
+    def getServices(self):
+        return self.__servicios
+
+    def getAge(self):
+        return self.edad
     def updateServices(self):
         for mensualidad in self.__servicios["Servicios_activos"]:
             if t.validateTime(mensualidad[2]):
@@ -62,7 +86,8 @@ class Cliente:
         print(f'\nNombre: {self.nombre_completo}')
         print(f'Edad: {self.edad}')
         print(f'Cedula: {self.getId()}')
-        print(f'ID del cliente: {self.getIdClient()}\n')
+        print(f'ID del cliente: {self.getIdClient()}')
+        print(f'Estado: {'Activo' if self.getBand() == True else 'Inactivo'}')
         print('Servicios activos: ')
         self.showMonthlyPayment()
         print("Asesoramientos activos: ")
@@ -186,6 +211,100 @@ def addConsultancy(type_of_consultancy):
 def showAllClients():
     for cliente in lista_clientes: 
         cliente.showClient(bypass = True)
+
+def transformDateToJson(date):
+    return {
+        "Year": date[2],
+        'Mes' : date[1],
+        'Dia' : date[0]
+    }
+
+def transformCounTToJson(service):
+    data= []
+    for serv in service:
+        data_s = {
+            'Tipo de asesoramiento' : serv[0],
+            'Pago' : serv[1],
+            'Fecha' : transformDateToJson(serv[2])
+        }
+        data.append(data_s)
+    return data
+    
+def transformServiceToJson(service):
+    data = []
+    for serv in service:
+        data_s = {
+            'Tipo de mensualidad' : serv[0],
+            'Pago' : serv[1],
+            'Fecha' : transformDateToJson(serv[2])
+        }
+        data.append(data_s)
+    return data
+def transformServicesToJson(services):
+    services_cliente = {
+        "Servicios activos" : transformServiceToJson(services['Servicios_activos']),
+        "Asesoramientos" : transformCounTToJson(services["Asesoramientos_activos"])
+    }
+    return services_cliente
+def transformClientsToJson(lista_clientes):
+    data = []
+    conteo = 1
+    for cliente in lista_clientes:
+        data_client = [{
+            "Nombre completo" : cliente.getName(),
+            "Edad" : cliente.getAge(),
+            "Cedula" : cliente.getId(),
+            "Servicios" : transformServicesToJson(cliente.getServices()),
+            "ID" : cliente.getIdClient(),
+            "Band" : 'False' if cliente.getBand() == False else 'True',
+            "Dias de mensualidad" : cliente.mensualidad_dias,
+            "Dias de asesoramientos" : cliente.asesoramiento_dias
+        }]
+        data.append(data_client)
+    return data_client
+
+def saveClient(lista_clientes):
+    data = transformClientsToJson(lista_clientes)
+    dict = {'clientes' : data}
+    file = scriptPath('files', 'clientes.json')
+    with open(file, 'w') as f:
+        f.write(j.dumps(dict, indent=4))
+
+def loadDate(data):
+    return [data['Year'], data['Mes'], data['Dia']]
+
+def loadCounseling(data):
+    list = []
+    counseling = data['Asesoramientos']
+    for c in counseling:
+        asesoramiento = c['Tipo de asesoramiento']
+        pago = c['Pago']
+        fecha = loadDate(c['Fecha'])
+        list.append([asesoramiento,pago,fecha])
+    return list
+def loadServices(data):
+    list = []
+    monthly_payment = data['Servicios activos']
+    for d in monthly_payment:
+        mensualidad = d['Tipo de mensualidad']
+        precio = d['Pago']
+        fecha = loadDate(d['Fecha'])
+        list.append([mensualidad, precio, fecha])
+    return list
+def loadClient():
+    file = scriptPath('files', 'clientes.json')
+    if not(path.exists(file)):
+        return None
+    with open(file, 'r') as f:
+        data = j.load(f)
+    return data
+    
+def loadAllClients():
+    data = loadClient()
+    if data is None:
+        return
+    for cliente in data['clientes']:
+        lista_clientes.append(Cliente(load=cliente))
 
 if __name__ == "__main__":
     pass

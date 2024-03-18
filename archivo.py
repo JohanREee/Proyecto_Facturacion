@@ -66,13 +66,22 @@ def generateSet(data, dict_key = False):
     return (dat for dat in data.keys()) #Nombre de producto
 
 def createFilesDirectory():
-    if not(os.path.exists('files')):
-        os.makedirs(scriptPath('files'))
-    crearArchivoMensualidad(scriptPath('files','mensualidad.json'))
-    crearArchivoProductos(scriptPath('files','nombre_productos.json'))
+    dir_path = scriptPath('files')
+    mensualidad_json = scriptPath('files', 'mensualidad.json')
+    nombre_productos_json = scriptPath('files', 'nombre_productos.json')
+    clientes = scriptPath('files', 'clientes.json')
+    if not(os.path.exists(dir_path)):
+        os.makedirs(dir_path)
+        if not(os.path.exists(mensualidad_json)):
+            crearArchivoMensualidad(mensualidad_json)
+        if not(os.path.exists(nombre_productos_json)):
+            crearArchivoProductos(nombre_productos_json)
+        if not(os.path.exists(clientes)):
+            crearArchivoCliente(clientes)
     #later create clientes.json
 
-
+def crearArchivoCliente(script_path):
+    pass
 def crearArchivoMensualidad(script_path):
     type_of_payment = {
     "Monthly": 430, 
@@ -80,9 +89,10 @@ def crearArchivoMensualidad(script_path):
     "Week" : 130, 
     "Daily": 35
     }
+    #comprobar que el archivo existe
     with open(script_path, 'w') as file:
         file.write(j.dumps(type_of_payment,indent=4))
-    file.close()
+ 
 
 def crearArchivoProductos(script_path):
     datos_productos = {
@@ -126,8 +136,6 @@ def crearArchivoProductos(script_path):
 }
     with open(script_path, 'w') as file:
         file.write(j.dumps(datos_productos,indent=4))
-    file.close()
-
 
 if __name__ == "__main__":
     pass

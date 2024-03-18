@@ -3,6 +3,7 @@ from validaciones import *
 from archivo import *
 import time_form as t
 from producto import *
+from sys import exit as ex
 n_factura = 1
 #dale
 
@@ -23,8 +24,10 @@ def menuPrincipal():
     match op:
         case 1:
             lista_clientes.append(Cliente())
+            saveClient(lista_clientes)
         case 2:
             editarCliente()
+            saveClient(lista_clientes)
         case 3:
             cliente = buscarCliente(lista_clientes, setId())
             if cliente is None:
@@ -32,8 +35,10 @@ def menuPrincipal():
             cliente.showClient()
         case 4:
             triggerClientState('off')
+            saveClient(lista_clientes)
         case 5:
             triggerClientState('on')
+            saveClient(lista_clientes)
         case 6:
             showAllClients()
         case 7:
@@ -45,8 +50,8 @@ def menuPrincipal():
         case 10:
             print('Menu de WU')
         case 11:
-            #codigo para guardar datos en un archivo#
-            exit('Saliendo del programa')
+            print('Saliendo del programa')
+            return 11
         case _:
             print('Valor invalido. Volver a intentar')
 
@@ -62,12 +67,16 @@ def menuServicios():
         match op:
             case 1:
                 addService('month')
+                saveClient(lista_clientes)
             case 2:
                 addService('fortknight')
+                saveClient(lista_clientes)
             case 3:
                 addService('week')
+                saveClient(lista_clientes)
             case 4:
                 addService('day')
+                saveClient(lista_clientes)
             case 5:
                 print('Volviendo al menu anterior')
                 return
@@ -84,12 +93,16 @@ def menuAsesoramientos():
         match op:
             case 1:
                 addConsultancy("Full Arnold")
+                saveClient(lista_clientes)
             case 2:
                 addConsultancy("Full Body")
+                saveClient(lista_clientes)
             case 3:
                 addConsultancy("Full Tonificar")
+                saveClient(lista_clientes)
             case 4:
                 addConsultancy("Asesoramiento Basico")
+                saveClient(lista_clientes)
             case 5:
                 print("Volviendo al menu anterior")
                 return

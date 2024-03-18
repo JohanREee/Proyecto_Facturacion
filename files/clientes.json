@@ -1,0 +1,27 @@
+{
+    "clientes": [
+        {
+            "Nombre completo": "Johan Reyes",
+            "Edad": 18,
+            "Cedula": "001-020306-1009F",
+            "Servicios": {
+                "Servicios activos": [],
+                "Asesoramientos": [
+                    {
+                        "Tipo de asesoramiento": "Full Arnold",
+                        "Pago": 78.0,
+                        "Fecha": {
+                            "Year": 16,
+                            "Mes": 4,
+                            "Dia": 2024
+                        }
+                    }
+                ]
+            },
+            "ID": 1,
+            "Band": "True",
+            "Dias de mensualidad": 0,
+            "Dias de asesoramientos": 30
+        }
+    ]
+}
