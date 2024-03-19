@@ -1,5 +1,5 @@
-from archivo import loadJSONMonthlyPayment, scriptPath, generateSet
-from validaciones import validarCadena, validarNumero , decoratorvalidate
+from archivo import loadJSONMonthlyPayment, scriptPath
+from validaciones import validarCadena, validarNumero , decoratorvalidate, ask
 from json import loads, dumps
 
 def getInfoFromFile(*dirs):
@@ -103,5 +103,50 @@ def addProduct():
     putInfoInFile(file_content, 'files','nombre_productos.json')
     print("Producto agregado al sistema exitosamente")
 
+@decoratorvalidate
+def askForPrice(message):
+    price = int(input(message))
+    if price <0:
+        raise ValueError
+    return price
+def askForProduct(message):
+    product = str(input(message))
+    return product
+
+def editOrDeleteProduct(action): #modificar o eliminar
+    category = chooseCategory()
+    if category is None:
+        return
+    file_content = getInfoFromFile('files','nombre_productos.json')
+    dict_category_loaded = file_content[category]
+
+    for product in dict_category_loaded:
+        print(f'{product}', end=', ')
+
+    user_product = askForProduct(f'Digite el producto que desea {action}: ')
+    for products in dict_category_loaded:
+        if products == user_product:
+            if action == 'modificar':
+                editProduct(dict_category_loaded, products,category, file_content)
+                break
+            if not(ask(f'Desea eliminar el producto {products}')):
+                return None
+            deleteProduct(dict_category_loaded, products,category, file_content)
+        return
+    print('No se ha encontrado el producto')
+    return
+
+def editProduct(dict_category_loaded, products,category, file_content):
+    dict_category_loaded[products] = askForPrice('Digite el nuevo valor del producto: ')
+    file_content[category] = dict_category_loaded
+    putInfoInFile(file_content, 'files', 'nombre_productos.json')
     
+
+def deleteProduct(dict_category_loaded, products,category, file_content):
+    del dict_category_loaded[products]
+    file_content[category] = dict_category_loaded
+    putInfoInFile(file_content, 'files', 'nombre_productos.json')
+    
+
+        
 

@@ -3,7 +3,7 @@ from validaciones import *
 from archivo import *
 import time_form as t
 from producto import *
-from configure import changePriceOfMonthlyPayment
+from configure import changePriceOfMonthlyPayment, addProduct, editOrDeleteProduct
 n_factura = 1
 #dale
 
@@ -172,11 +172,11 @@ def menuConfiguracionProductos():
         op = validarNumero('Digite una opcion valida: ')
         match op:
             case 1:
-                pass
+                addProduct()
             case 2: 
-                pass
+                editOrDeleteProduct('modificar')
             case 3:
-                pass
+                editOrDeleteProduct('eliminar')
             case 4:
                 print('Volviendo al menu anterior')
                 return
