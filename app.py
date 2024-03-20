@@ -1,5 +1,5 @@
 from menu1 import menuPrincipal
-from cliente import updateAllClients, loadAllClients
+from cliente import *
 from archivo import createFilesDirectory
 from producto import n_factura_iterate
 import time
@@ -8,12 +8,12 @@ import threading as thr
 update = thr.Event()
 
 loadAllClients()
-def updating(): #Using tkinter for count 5 minutes before updating
+def updating(): 
     value = 0
     while True:
         value +=1
-        if value == 30:
-            updateAllClients()
+        if value == 3:
+            updateAllClients(lista_clientes)
             value = 0
         if update.is_set():
             break
@@ -24,6 +24,7 @@ def mainMenuCode():####
     while True:
         number = menuPrincipal()
         if number == 11:break
+    
     update.set()
 
 th_update = thr.Thread(target=updating)

@@ -131,16 +131,16 @@ def editOrDeleteProduct(action): #modificar o eliminar
     for product in dict_category_loaded:
         print(f'{product}', end=', ')
 
-    user_product = askForProduct(f'Digite el producto que desea {action}: ')
+    user_product = askForProduct(f'\nDigite el producto que desea {action}: ')
     for products in dict_category_loaded:
         if products == user_product:
             if action == 'modificar':
                 editProduct(dict_category_loaded, products,category, file_content)
                 break
-            if not(ask(f'Desea eliminar el producto {products}')):
+            if not(ask(f'Desea eliminar el producto {products}? ')):
                 return None
             deleteProduct(dict_category_loaded, products,category, file_content)
-        return
+            return
     print('No se ha encontrado el producto')
     return
 

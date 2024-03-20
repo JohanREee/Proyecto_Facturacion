@@ -1,27 +1,34 @@
 {
     "clientes": [
-        {
-            "Nombre completo": "Johan Reyes",
-            "Edad": 18,
-            "Cedula": "001-020306-1009F",
-            "Servicios": {
-                "Servicios activos": [],
-                "Asesoramientos": [
-                    {
-                        "Tipo de asesoramiento": "Full Arnold",
-                        "Pago": 78.0,
-                        "Fecha": {
-                            "Year": 16,
-                            "Mes": 4,
-                            "Dia": 2024
-                        }
-                    }
-                ]
-            },
-            "ID": 1,
-            "Band": "True",
-            "Dias de mensualidad": 0,
-            "Dias de asesoramientos": 30
-        }
+        [
+            {
+                "Nombre completo": "Banban Gonzales",
+                "Edad": 17,
+                "Cedula": "284-030369-0001L",
+                "Servicios": {
+                    "Servicios activos": [],
+                    "Asesoramientos": []
+                },
+                "ID": 1,
+                "Band": "True",
+                "Dias de mensualidad": -240,
+                "Dias de asesoramientos": 30
+            }
+        ],
+        [
+            {
+                "Nombre completo": "Biribin Bobara de Dios",
+                "Edad": 51,
+                "Cedula": "001-310572-7889X",
+                "Servicios": {
+                    "Servicios activos": [],
+                    "Asesoramientos": []
+                },
+                "ID": 2,
+                "Band": "True",
+                "Dias de mensualidad": 0,
+                "Dias de asesoramientos": -240
+            }
+        ]
     ]
 }

@@ -32,7 +32,7 @@ def decoratorvalidate(function):
 def validarNumero(message, age = False, services = False):
     numero = int(input(message))
     if age:
-        if not (0<numero<100):
+        if not (15<numero<100):
             raise ValueError
         return numero
     if services:

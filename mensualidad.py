@@ -1,11 +1,10 @@
-import validaciones as v
 import time_form as t
-
+from archivo import fileMonthlyPayment
 from archivo import createFilesDirectory
 
 
 def generarMembresia(type_of_payment,mensualidad_dias):
-    amount, name_payment = v.fileMonthlyPayment(type_of_payment)
+    amount, name_payment = fileMonthlyPayment(type_of_payment)
     if amount is None:
         createFilesDirectory()
         list_payment, days = generarMembresia(type_of_payment,mensualidad_dias)
@@ -26,8 +25,7 @@ def generarMembresia(type_of_payment,mensualidad_dias):
         case 'day':
             day_amount = 1
             formal_name_payment = 'Diario'
-    day_amount += mensualidad_dias
-    notification_time= t.addTime(current_time, day_amount)
+    notification_time= t.addTime(current_time, day_amount+mensualidad_dias)
     return [formal_name_payment,amount, notification_time], mensualidad_dias + day_amount
 
 if __name__ == "__main__":

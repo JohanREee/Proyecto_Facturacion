@@ -28,13 +28,13 @@ def validateTime(expiration_time): #True, False
     current_year, current_month, current_day = current_time
     expiration_year, expiration_month, expiration_day = expiration_time
 
-    if(current_year > expiration_year): #2024, 2025
-        return True
-    elif(current_month > expiration_month):
-        return True
-    elif(current_day > expiration_day):
-        return True
-    return False
+    if(current_year == expiration_year and current_month == expiration_month and current_day > expiration_day): #2024, 2025
+        return False
+    elif(current_year == expiration_month and current_month > expiration_month):
+        return False
+    elif(current_year > expiration_year):
+        return False
+    return True
 
 def showDate(time):
     return f"{time[2]}/{time[1]}/{time[0]}"

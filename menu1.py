@@ -4,9 +4,21 @@ from archivo import *
 import time_form as t
 from producto import solicitarProducto
 from configure import changePriceOfMonthlyPayment, addProduct, editOrDeleteProduct
+from os import system
+import keyboard as k
 n_factura = 1
-#dale
 
+def cleanScreen(type):
+    system(type)
+
+def waitForEnter():
+    print('Presiona enter para continuar...',end='', flush=True)
+    while k.is_pressed('enter'):
+        pass
+    while True:
+        key = k.read_event(suppress=True).name
+        if key == 'enter':
+            break
 def menuPrincipal():
     print('Bienvenido a Arnold Gym')
     print('1. Agregar cliente')
@@ -54,6 +66,8 @@ def menuPrincipal():
             return 11
         case _:
             print('Valor invalido. Volver a intentar')
+    waitForEnter()
+    cleanScreen('cls')
 
 def menuServicios():
     while True:
@@ -82,6 +96,8 @@ def menuServicios():
                 return
             case _:
                 print('Valor invalido. Volver a intentar')
+        waitForEnter()
+        cleanScreen('cls')
 def menuAsesoramientos():
     while True:
         print("Menu de asesoramientos")
@@ -89,6 +105,7 @@ def menuAsesoramientos():
         print("2. Full Body")
         print("3. Tonificar")
         print("4. Asesoramiento Basico")
+        print('5. Volver al menu anterior')
         op = validarNumero("Digite una opcion valida: ")
         match op:
             case 1:
@@ -108,6 +125,8 @@ def menuAsesoramientos():
                 return
             case _:
                 print("Valor invalido. Volver a intentar")
+        waitForEnter()
+        cleanScreen('cls')
 def menuProductos():
     while True:
         print('Menu de productos')
@@ -131,6 +150,8 @@ def menuProductos():
                 return
             case _:
                 print("Valor invalido. Volver a intentar")
+        waitForEnter()
+        cleanScreen('cls')
 def menuConfiguracion():
     while True:
         print("Menu de configuracion")
@@ -148,6 +169,8 @@ def menuConfiguracion():
                 return
             case _:
                 print("Valor invalido. Volver a intentar")
+        waitForEnter()
+        cleanScreen('cls')
 def menuConfiguracionMensualidad():
     while True:
         print("Menu de configuracion de mensualidad")
@@ -162,6 +185,8 @@ def menuConfiguracionMensualidad():
                 return
             case _:
                 print('Valor invalido. Volver a intentar')
+        waitForEnter()
+        cleanScreen('cls')
 def menuConfiguracionProductos():
     while True:
         print("Menu de configuracion de productos")
@@ -182,3 +207,5 @@ def menuConfiguracionProductos():
                 return
             case _:
                 print('Valor invalido. Volver a intentar')
+        waitForEnter()
+        cleanScreen('cls')

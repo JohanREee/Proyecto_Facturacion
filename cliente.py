@@ -12,14 +12,17 @@ def modificarListaEmpleado(cliente_update, id_cliente):
     for x, cliente in enumerate(lista_clientes):
         if id_cliente == cliente.getIdClient():
             lista_clientes[x] = cliente_update
-            
+
 class Cliente:
     def __init__(self, load = None):
         global conteo_cliente
         if load is None:
             self.nombre_completo = v.validarCadena('Digite el nombre del cliente: ')
-            self.edad = v.validarNumero('Digite la edad del cliente: ')
-            self.__cedula = v.validarCedula('Digite la cedula del cliente: ', lista_clientes)
+            while True: #9 and 10
+                self.edad = v.validarNumero('Digite la edad del cliente: ', age=True)
+                self.__cedula = v.validarCedula('Digite la cedula del cliente: ', lista_clientes)
+
+                break
             self.__servicios = {"Servicios_activos": [], "Asesoramientos_activos": []}        
             self.__id_cliente = conteo_cliente
             self.__band = True
@@ -37,7 +40,6 @@ class Cliente:
         self.__id_cliente = load['ID']
         conteo_cliente +=1
         self.__band = False if load['Band'] == 'False' else True
-        self.mensualidad_dias = 30
         self.asesoramiento_dias = load['Dias de asesoramientos']
         self.mensualidad_dias = load['Dias de mensualidad']
         return
@@ -61,6 +63,8 @@ class Cliente:
     def getAge(self):
         return self.edad
     def updateServices(self):
+        index_m = None
+        index_a = None
         for mensualidad in self.__servicios["Servicios_activos"]:
             if t.validateTime(mensualidad[2]):
                 match mensualidad[0]: 
@@ -72,17 +76,24 @@ class Cliente:
                         self.mensualidad_dias -=7
                     case 'Diario':
                         self.mensualidad_dias -=1
-                del mensualidad
+                index_m = self.__servicios["Servicios_activos"].index(mensualidad)
+                break
+        if index_m is not None:
+            del self.__servicios["Servicios_activos"][index_m]
 
         for asesoramiento in self.__servicios["Asesoramientos_activos"]:
             if t.validateTime(asesoramiento[2]):
                 self.asesoramiento_dias -=30
-                del asesoramiento
+                index_a = self.__servicios["Asesoramientos_activos"].index(asesoramiento)
+                break
+        if index_a is not None:
+            del self.__servicios["Asesoramientos_activos"][index_a]
 
     def showClient(self, bypass = False):#bypass = True for showing ALL clients without asking
-        if bypass or self.getBand() == False:
-            if not(v.ask('Este usuario ha sido eliminado del sistema. Desea mostrarlo?')):
-                return
+        if bypass == False:
+            if self.getBand() == False:
+                if not(v.ask('Este usuario ha sido eliminado del sistema. Desea mostrarlo?')):
+                    return
         print(f'\nNombre: {self.nombre_completo}')
         print(f'Edad: {self.edad}')
         print(f'Cedula: {self.getId()}')
@@ -153,7 +164,7 @@ def editarCliente():
         print('Cliente no encontrado. Volviendo al menu anterior')
         return
     print(f'Opciones a editar para el cliente{cliente.nombre_completo}:')
-    print('1.Nombre\n2.Edad\n3. Cedula')
+    print('1.Nombre\n2.Edad')
     op = v.validarNumero('Seleccione una opcion valida: ')
     cliente.editClient(op)
     print('Cliente editado exitosamente')
@@ -184,9 +195,10 @@ def triggerClientState(action):
             print('Cliente reactivado satisfactoriamente')
             return
         
-def updateAllClients():
+def updateAllClients(lista_clientes):
     for cliente in lista_clientes:
         cliente.updateServices()
+    saveClient(lista_clientes)
 
 def addService(type_of_payment):
     cliente = buscarCliente(lista_clientes, setId())
@@ -214,9 +226,9 @@ def showAllClients():
 
 def transformDateToJson(date):
     return {
-        "Year": date[2],
+        "Dia": date[2],
         'Mes' : date[1],
-        'Dia' : date[0]
+        'Year' : date[0]
     }
 
 def transformCounTToJson(service):
@@ -260,7 +272,7 @@ def transformClientsToJson(lista_clientes):
             "Dias de asesoramientos" : cliente.asesoramiento_dias
         }]
         data.append(data_client)
-    return data_client
+    return data
 
 def saveClient(lista_clientes):
     data = transformClientsToJson(lista_clientes)
@@ -290,6 +302,7 @@ def loadServices(data):
         fecha = loadDate(d['Fecha'])
         list.append([mensualidad, precio, fecha])
     return list
+                     
 def loadClient():
     file = scriptPath('files', 'clientes.json')
     if not(path.exists(file)):
@@ -302,8 +315,11 @@ def loadAllClients():
     data = loadClient()
     if data is None:
         return
-    for cliente in data['clientes']:
-        lista_clientes.append(Cliente(load=cliente))
+    data_clients = data['clientes']
+
+    for clientes in data_clients:
+        for cliente in clientes:
+            lista_clientes.append(Cliente(cliente))
 
 if __name__ == "__main__":
     pass
