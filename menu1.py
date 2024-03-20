@@ -2,7 +2,7 @@ from cliente import *
 from validaciones import *
 from archivo import *
 import time_form as t
-from producto import *
+from producto import solicitarProducto
 from configure import changePriceOfMonthlyPayment, addProduct, editOrDeleteProduct
 n_factura = 1
 #dale
@@ -48,7 +48,7 @@ def menuPrincipal():
         case 9:
             menuAsesoramientos()
         case 10:
-            print('Menu de WU')
+            menuConfiguracion()
         case 11:
             print('Saliendo del programa')
             return 11

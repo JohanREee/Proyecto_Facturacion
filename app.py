@@ -1,13 +1,13 @@
 from menu1 import menuPrincipal
 from cliente import updateAllClients, loadAllClients
 from archivo import createFilesDirectory
+from producto import n_factura_iterate
 import time
 import threading as thr
 
 update = thr.Event()
 
 loadAllClients()
-
 def updating(): #Using tkinter for count 5 minutes before updating
     value = 0
     while True:

@@ -248,7 +248,6 @@ def transformServicesToJson(services):
     return services_cliente
 def transformClientsToJson(lista_clientes):
     data = []
-    conteo = 1
     for cliente in lista_clientes:
         data_client = [{
             "Nombre completo" : cliente.getName(),

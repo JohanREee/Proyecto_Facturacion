@@ -1,12 +1,20 @@
 from archivo import loadJSONMonthlyPayment, scriptPath
 from validaciones import validarCadena, validarNumero , decoratorvalidate, ask
-from json import loads, dumps
+from json import load, dumps, JSONDecodeError
+import os
 
 def getInfoFromFile(*dirs):
     file = scriptPath(*dirs)
-    with open(file,'r') as f:
-        file_content = loads(file)
+    if not(os.path.exists(file)):
+        with open(file,'w') as f:pass
+
+    try:
+        with open(file,'r') as f:
+            file_content = load(f)
+    except JSONDecodeError:
+        file_content = None
     return file_content
+
 def putInfoInFile(file_content, *dirs):
     file = scriptPath(*dirs)
     with open (file, 'w') as f:
@@ -15,10 +23,10 @@ def chooseMonthlyPayment():
     prices = loadJSONMonthlyPayment()
     while True:
         print("Opciones validas. A la derecha se muestra su precio actual")
-        print(f"1. Mensualidad{prices[0]}")
-        print(f"2. Quincena{prices[1]}")
-        print(f"3. Semana{prices[2]}")
-        print(f'4. Dia{prices[3]}')
+        print(f"1. Mensualidad --- {prices[0]}")
+        print(f"2. Quincena --- {prices[1]}")
+        print(f"3. Semana --- {prices[2]}")
+        print(f'4. Dia --- {prices[3]}')
         print("5. Cancelar")
         op = validarNumero('Digite una opcion valida: ')
         match op:
@@ -86,7 +94,7 @@ def typeProduct():
 
 @decoratorvalidate
 def priceProduct():
-    precio = validarNumero('Digite el nombre del producto: ')
+    precio = validarNumero('Digite el precio del producto: ')
     if precio <0:
         raise ValueError
     return precio
