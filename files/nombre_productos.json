@@ -4,7 +4,6 @@
         "Isolate Protein Rule 1": 440,
         "Whey Protein RN": 455,
         "Rule 1 Mass Gainer": 255,
-        "King Mass RN": 240,
         "Dymatize Mass Gainer": 250
     },
     "Pastilla": {
@@ -19,7 +18,7 @@
         "Psychotic": 50,
         "Micronozed L Glutamine": 45,
         "Creatina RN": 23,
-        "Creatina Muscle Tech": 25,
+        "Creatina Muscle Tech": 100000,
         "Creatina Right Nutrition": 20,
         "Creatinea Rule 1": 22,
         "Mega scoop": 100
@@ -30,7 +29,7 @@
         "Micronized L Glutamine": 1550,
         "Tribulus RN": 720,
         "Tribulus My Protein": 800,
-        "Barra Magnesio": 200,
+        "Barra Magnesio": 350,
         "Animal Pak": 1950,
         "Creatina RN": 1100,
         "Creatina Muscle Tech": 1200,

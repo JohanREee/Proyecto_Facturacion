@@ -136,7 +136,7 @@ def editOrDeleteProduct(action): #modificar o eliminar
         if products == user_product:
             if action == 'modificar':
                 editProduct(dict_category_loaded, products,category, file_content)
-                break
+                return
             if not(ask(f'Desea eliminar el producto {products}? ')):
                 return None
             deleteProduct(dict_category_loaded, products,category, file_content)
@@ -147,12 +147,14 @@ def editOrDeleteProduct(action): #modificar o eliminar
 def editProduct(dict_category_loaded, products,category, file_content):
     dict_category_loaded[products] = askForPrice('Digite el nuevo valor del producto: ')
     file_content[category] = dict_category_loaded
+    print('Producto editado')
     putInfoInFile(file_content, 'files', 'nombre_productos.json')
     
 
 def deleteProduct(dict_category_loaded, products,category, file_content):
     del dict_category_loaded[products]
     file_content[category] = dict_category_loaded
+    print("Producto eliminado")
     putInfoInFile(file_content, 'files', 'nombre_productos.json')
     
 

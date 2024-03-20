@@ -5,14 +5,23 @@ import time_form as t
 from producto import solicitarProducto
 from configure import changePriceOfMonthlyPayment, addProduct, editOrDeleteProduct
 from os import system
+
+from colorama import Fore, Back, Style
 import keyboard as k
+
+red = Fore.RED
+ligth_green = Fore.LIGHTGREEN_EX
+blue = Fore.BLUE
+cyan = Fore.CYAN
+magenta = Fore.MAGENTA
+reset = Fore.RESET
 n_factura = 1
 
 def cleanScreen(type):
     system(type)
 
 def waitForEnter():
-    print('Presiona enter para continuar...',end='', flush=True)
+    print(f'{magenta}Presiona enter para continuar...',end='', flush=True)
     while k.is_pressed('enter'):
         pass
     while True:
@@ -20,6 +29,7 @@ def waitForEnter():
         if key == 'enter':
             break
 def menuPrincipal():
+    print(blue)
     print('Bienvenido a Arnold Gym')
     print('1. Agregar cliente')
     print('2. Editar cliente')
@@ -32,6 +42,7 @@ def menuPrincipal():
     print('9. Menu de Asesoramientos')
     print('10. Menu de Configuracion')
     print('11. Salir')
+    print(ligth_green)
     op = validarNumero('Digite una opcion valida: ')
     match op:
         case 1:
@@ -71,12 +82,14 @@ def menuPrincipal():
 
 def menuServicios():
     while True:
+        print(blue)
         print('Menu de cuotas')
         print('1. Formato Mensual')
         print('2. Formato Quincenal')
         print('3. Formato Semanal')
         print('4. Formato Diario')
         print('5. Volver a Menu Anterior')
+        print(ligth_green)
         op = validarNumero('Digite una opcion valida: ')
         match op:
             case 1:
@@ -100,12 +113,14 @@ def menuServicios():
         cleanScreen('cls')
 def menuAsesoramientos():
     while True:
+        print(blue)
         print("Menu de asesoramientos")
         print("1. Full Arnold")
         print("2. Full Body")
         print("3. Tonificar")
         print("4. Asesoramiento Basico")
         print('5. Volver al menu anterior')
+        print(ligth_green)
         op = validarNumero("Digite una opcion valida: ")
         match op:
             case 1:
@@ -129,12 +144,14 @@ def menuAsesoramientos():
         cleanScreen('cls')
 def menuProductos():
     while True:
+        print(blue)
         print('Menu de productos')
         print('1. Productos Libreados')
         print('2. Productos en Scoops')
         print('3. Productos en Pastillas')
         print('4. Productos en Tarro o Total')
         print('5. Volver a menu Anterior')
+        print(ligth_green)
         op = validarNumero('Digite una opcion valida: ')
         match op:
             case 1:
@@ -154,10 +171,12 @@ def menuProductos():
         cleanScreen('cls')
 def menuConfiguracion():
     while True:
+        print(blue)
         print("Menu de configuracion")
         print('1. Menu de configuracion de mensualidad')
         print('2. Menu de configuracion de productos')
         print('3. Volver al menu anterior.')
+        print(ligth_green)
         op = validarNumero('Digite una opcion valida: ')
         match op:
             case 1:
@@ -173,9 +192,11 @@ def menuConfiguracion():
         cleanScreen('cls')
 def menuConfiguracionMensualidad():
     while True:
+        print(blue)
         print("Menu de configuracion de mensualidad")
         print('1. Cambiar precio')
         print('2. Volver al menu anterior')
+        print(ligth_green)
         op = validarNumero('Digite una opcion valida: ')
         match op:
             case 1:
@@ -189,11 +210,13 @@ def menuConfiguracionMensualidad():
         cleanScreen('cls')
 def menuConfiguracionProductos():
     while True:
+        print(blue)
         print("Menu de configuracion de productos")
         print('1. Agregar producto')
         print('2. Editar producto')
         print('3. Eliminar producto')
         print('4. Volver al menu anterior')
+        print(ligth_green)
         op = validarNumero('Digite una opcion valida: ')
         match op:
             case 1:

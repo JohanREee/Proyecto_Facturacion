@@ -11,8 +11,8 @@
                 },
                 "ID": 1,
                 "Band": "True",
-                "Dias de mensualidad": -240,
-                "Dias de asesoramientos": 30
+                "Dias de mensualidad": 0,
+                "Dias de asesoramientos": 0
             }
         ],
         [
@@ -27,7 +27,7 @@
                 "ID": 2,
                 "Band": "True",
                 "Dias de mensualidad": 0,
-                "Dias de asesoramientos": -240
+                "Dias de asesoramientos": 0
             }
         ]
     ]
